@@ -118,6 +118,8 @@ class Sms
 
     public function setStatus(int $status): self
     {
+        // status {0: waiting, 1: sent, 2:failed}
+
         $this->status = $status;
 
         return $this;
