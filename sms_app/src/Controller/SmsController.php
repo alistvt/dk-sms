@@ -56,9 +56,26 @@ class SmsController extends AbstractController
     if (!$number) {
       $productCount = $em->getRepository(Sms::class)
                          ->count(['status' => 1]);
+
+      $qb = $em->createQueryBuilder()
+                ->select('sms.number, count(sms.number) as counter')
+                ->from('App\Entity\Sms', 'sms')
+                ->groupBy('sms.number')
+                ->orderBy('counter', 'DESC')
+                ->setMaxResults(10);
+
+      $query = $qb->getQuery();
+
+      $mostUsedNumbers = $query->execute();
+
+      // dump($mostUsedNumbers);
+
       return $this->render(
         'report.html.twig',
-        ['count' => $productCount]
+        [
+          'count' => $productCount,
+          'smses' => $mostUsedNumbers
+        ]
       );
     }
     else {

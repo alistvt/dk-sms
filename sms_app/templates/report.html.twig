@@ -4,4 +4,20 @@
 
 {% block body %}
   <b>Total sent SMS count: </b>{{count}}
+  </br></br>
+  <b> Here are 10 most used numbers:</b>
+  <ol>
+    <table>
+      <tr>
+        <th>Rank</th><th>Number</th><th>Count</th>
+      </tr>
+    {% for sms in smses %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ sms.number }}</td>
+        <td>{{ sms.counter }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </ol>
 {% endblock %}
