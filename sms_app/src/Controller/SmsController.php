@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class SmsController
+class SmsController extends AbstractController
 {
   /**
    *@Route("/")
@@ -49,12 +49,17 @@ class SmsController
   /**
    *@Route("/report/")
    */
-  public function report()
+  public function report(EntityManagerInterface $em)
   {
     $request = Request::createFromGlobals();
     $number = $request->get('number');
     if (!$number) {
-      return new Response("Response for all!");
+      $productCount = $em->getRepository(Sms::class)
+                         ->count(['status' => 1]);
+      return $this->render(
+        'report.html.twig',
+        ['count' => $productCount]
+      );
     }
     else {
       return new Response(sprintf("Response for %s", $number));
