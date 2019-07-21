@@ -60,5 +60,4 @@ class SmsController
       return new Response(sprintf("Response for %s", $number));
     }
   }
-
 }
